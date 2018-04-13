@@ -23,16 +23,31 @@ const getSrc = ({ src }) => {
   return undefined;
 };
 
-const DefaultVideoCompoent = ({
-  blockProps,
-  className = '',
-  style,
-  theme,
-}) => {
+const DefaultVideoCompoent = (props) => {
+  const {
+    blockProps,
+    className = '',
+    style,
+    theme,
+    ...otherProps
+  } = props;
+  const {
+    customStyleMap, // eslint-disable-line no-unused-vars
+    customStyleFn, // eslint-disable-line no-unused-vars
+    decorator, // eslint-disable-line no-unused-vars
+    forceSelection, // eslint-disable-line no-unused-vars
+    offsetKey, // eslint-disable-line no-unused-vars
+    selection, // eslint-disable-line no-unused-vars
+    tree, // eslint-disable-line no-unused-vars
+    block,
+    contentState,
+    blockStyleFn,
+    ...elementProps
+  } = otherProps;
   const src = getSrc(blockProps);
   if (src) {
     return (
-      <div style={style} >
+      <div style={style} {...elementProps}>
         <div className={`${theme.iframeContainer} ${className}`}>
           <iframe
             className={theme.iframe}
@@ -43,6 +58,12 @@ const DefaultVideoCompoent = ({
         </div>
       </div>
     );
+  } else {
+    return (
+      <video src={blockProps.src} controls className={`${theme.video} ${className}`} style={style} {...elementProps}>
+        Your browser does not support the video tag.
+      </video>
+    )
   }
 
   return (<div className={theme.invalidVideoSrc}>invalid video source</div>);
